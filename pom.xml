@@ -9,10 +9,11 @@
   </parent>
   <groupId>com.github.leeyazhou</groupId>
   <artifactId>okhttp-ja3-parent</artifactId>
-  <version>4.12-ja3-SNAPSHOT</version>
+  <version>4.12-ja3</version>
   <packaging>pom</packaging>
   <modules>
     <module>okhttp-ja3</module>
+    <module>okhttp-ja3-shade</module>
   </modules>
 
   <properties>
