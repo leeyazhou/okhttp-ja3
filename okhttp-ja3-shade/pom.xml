@@ -52,6 +52,8 @@
               </relocations>
               <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+              <createSourcesJar>true</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
             </configuration>
           </execution>
         </executions>
