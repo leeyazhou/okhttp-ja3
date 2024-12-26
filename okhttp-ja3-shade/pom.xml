@@ -50,6 +50,8 @@
                   <shadedPattern>ja3.okhttp3</shadedPattern>
                 </relocation>
               </relocations>
+              <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
+              <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
             </configuration>
           </execution>
         </executions>
