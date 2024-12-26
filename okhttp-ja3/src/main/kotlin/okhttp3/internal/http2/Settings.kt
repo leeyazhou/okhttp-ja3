@@ -21,72 +21,66 @@ package okhttp3.internal.http2
  */
 class Settings {
 
-  /** Bitfield of which flags that values. */
-  private var set: Int = 0
-
   /** Flag values. */
-  private val values = IntArray(COUNT)
+  val values = LinkedHashMap<Int, Int>(COUNT)
 
   /** Returns -1 if unset. */
   val headerTableSize: Int
     get() {
-      val bit = 1 shl HEADER_TABLE_SIZE
-      return if (bit and set != 0) values[HEADER_TABLE_SIZE] else -1
+      return values.getOrDefault(HEADER_TABLE_SIZE, -1)
     }
 
   val initialWindowSize: Int
     get() {
-      val bit = 1 shl INITIAL_WINDOW_SIZE
-      return if (bit and set != 0) values[INITIAL_WINDOW_SIZE] else DEFAULT_INITIAL_WINDOW_SIZE
+      return values.getOrDefault(INITIAL_WINDOW_SIZE, DEFAULT_INITIAL_WINDOW_SIZE)
     }
 
   fun clear() {
-    set = 0
-    values.fill(0)
+    values.clear()
   }
 
   operator fun set(id: Int, value: Int): Settings {
-    if (id < 0 || id >= values.size) {
+    if(value == -1) {
+      values.remove(id)
+      return this
+    }
+    if (id < 0 || id >= COUNT) {
       return this // Discard unknown settings.
     }
 
-    val bit = 1 shl id
-    set = set or bit
     values[id] = value
     return this
   }
 
   /** Returns true if a value has been assigned for the setting `id`. */
   fun isSet(id: Int): Boolean {
-    val bit = 1 shl id
-    return set and bit != 0
+    return values.containsKey(id)
   }
 
   /** Returns the value for the setting `id`, or 0 if unset. */
-  operator fun get(id: Int): Int = values[id]
+  operator fun get(id: Int): Int = values.getOrDefault(id, 0)
 
   /** Returns the number of settings that have values assigned. */
-  fun size(): Int = Integer.bitCount(set)
+  fun size(): Int = values.size
 
   // TODO: honor this setting.
   fun getEnablePush(defaultValue: Boolean): Boolean {
-    val bit = 1 shl ENABLE_PUSH
-    return if (bit and set != 0) values[ENABLE_PUSH] == 1 else defaultValue
+    if(values.containsKey(ENABLE_PUSH)) {
+      return values[ENABLE_PUSH] == 1
+    }
+    return defaultValue
   }
 
   fun getMaxConcurrentStreams(): Int {
-    val bit = 1 shl MAX_CONCURRENT_STREAMS
-    return if (bit and set != 0) values[MAX_CONCURRENT_STREAMS] else Int.MAX_VALUE
+    return values.getOrDefault(MAX_CONCURRENT_STREAMS, Int.MAX_VALUE)
   }
 
   fun getMaxFrameSize(defaultValue: Int): Int {
-    val bit = 1 shl MAX_FRAME_SIZE
-    return if (bit and set != 0) values[MAX_FRAME_SIZE] else defaultValue
+    return values.getOrDefault(MAX_FRAME_SIZE, defaultValue)
   }
 
   fun getMaxHeaderListSize(defaultValue: Int): Int {
-    val bit = 1 shl MAX_HEADER_LIST_SIZE
-    return if (bit and set != 0) values[MAX_HEADER_LIST_SIZE] else defaultValue
+    return values.getOrDefault(MAX_HEADER_LIST_SIZE, defaultValue)
   }
 
   /**
