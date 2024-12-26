@@ -16,22 +16,56 @@
   </modules>
 
   <properties>
+    <bouncycastle.version>1.79</bouncycastle.version>
     <jdk.version>1.8</jdk.version>
     <kotlin.version>1.9.25</kotlin.version>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>3.0.2</version>
+      </dependency>
       <dependency>
         <groupId>com.squareup.okio</groupId>
         <artifactId>okio</artifactId>
         <version>3.9.1</version>
       </dependency>
       <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk15to18</artifactId>
+        <version>${bouncycastle.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bctls-jdk15to18</artifactId>
+        <version>${bouncycastle.version}</version>
+      </dependency>
+      <dependency>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-annotations</artifactId>
-        <version>1.23</version>
+        <version>1.24</version>
         <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>org.conscrypt</groupId>
+        <artifactId>conscrypt-openjdk-uber</artifactId>
+        <version>2.5.2</version>
+      </dependency>
+      <dependency>
+        <groupId>org.openjsse</groupId>
+        <artifactId>openjsse</artifactId>
+        <version>1.1.14</version>
+      </dependency>
+      <dependency>
+        <groupId>org.robolectric</groupId>
+        <artifactId>android-all</artifactId>
+        <version>12.1-robolectric-8229987</version>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
@@ -54,8 +88,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>${jd.version}</source>
-          <target>${jd.version}</target>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.source}</target>
           <compilerArgs>
             <arg>-Xlint:-options</arg>
           </compilerArgs>
