@@ -18,7 +18,6 @@
 
   <properties>
     <bouncycastle.version>1.79</bouncycastle.version>
-    <jdk.version>1.8</jdk.version>
     <kotlin.version>1.9.25</kotlin.version>
     <maven.compiler.source>8</maven.compiler.source>
     <maven.compiler.target>8</maven.compiler.target>
