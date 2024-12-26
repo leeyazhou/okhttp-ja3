@@ -54,6 +54,7 @@
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
               <createSourcesJar>true</createSourcesJar>
               <shadeSourcesContent>true</shadeSourcesContent>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
             </configuration>
           </execution>
         </executions>

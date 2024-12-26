@@ -3,7 +3,7 @@
   <parent>
     <artifactId>okhttp-ja3-parent</artifactId>
     <groupId>com.github.leeyazhou</groupId>
-    <version>4.12-ja3</version>
+    <version>4.12.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>okhttp-ja3-shade</artifactId>
@@ -39,7 +39,11 @@
                   <shadedPattern>ja3.okhttp3</shadedPattern>
                 </relocation>
               </relocations>
+              <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+              <createSourcesJar>true</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <shadedArtifactAttached>false</shadedArtifactAttached>
             </configuration>
           </execution>
         </executions>
@@ -50,7 +54,7 @@
     <dependency>
       <groupId>com.github.leeyazhou</groupId>
       <artifactId>okhttp-ja3</artifactId>
-      <version>4.12-ja3</version>
+      <version>4.12.0.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
