@@ -15,7 +15,6 @@
  */
 package okhttp3.internal.http2
 
-import okhttp3.PriorityFrame
 import java.io.Closeable
 import java.io.IOException
 import java.util.logging.Level.FINE
@@ -32,7 +31,6 @@ import okhttp3.internal.http2.Http2.TYPE_DATA
 import okhttp3.internal.http2.Http2.TYPE_GOAWAY
 import okhttp3.internal.http2.Http2.TYPE_HEADERS
 import okhttp3.internal.http2.Http2.TYPE_PING
-import okhttp3.internal.http2.Http2.TYPE_PRIORITY
 import okhttp3.internal.http2.Http2.TYPE_PUSH_PROMISE
 import okhttp3.internal.http2.Http2.TYPE_RST_STREAM
 import okhttp3.internal.http2.Http2.TYPE_SETTINGS
@@ -168,20 +166,6 @@ class Http2Writer(
     }
   }
 
-  @Synchronized @Throws(IOException::class)
-  fun priority(frame : PriorityFrame) {
-    if (closed) throw IOException("closed")
-    frameHeader(
-      streamId = frame.streamId,
-      length = 5,
-      type = TYPE_PRIORITY,
-      flags = FLAG_NONE
-    )
-    sink.writeInt(frame.streamDependency)
-    sink.writeByte(frame.weight)
-    sink.flush()
-  }
-
   /** Write okhttp's settings to the peer. */
   @Synchronized @Throws(IOException::class)
   fun settings(settings: Settings) {
@@ -192,14 +176,15 @@ class Http2Writer(
         type = TYPE_SETTINGS,
         flags = FLAG_NONE
     )
-    for(setting in settings.values) {
-      val id = when (setting.key) {
+    for (i in 0 until Settings.COUNT) {
+      if (!settings.isSet(i)) continue
+      val id = when (i) {
         4 -> 3 // SETTINGS_MAX_CONCURRENT_STREAMS renumbered.
         7 -> 4 // SETTINGS_INITIAL_WINDOW_SIZE renumbered.
-        else -> setting.key
+        else -> i
       }
       sink.writeShort(id)
-      sink.writeInt(setting.value)
+      sink.writeInt(settings[i])
     }
     sink.flush()
   }

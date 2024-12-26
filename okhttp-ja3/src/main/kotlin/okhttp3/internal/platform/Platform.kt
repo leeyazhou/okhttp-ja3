@@ -32,6 +32,7 @@ import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
+import okhttp3.internal.platform.android.AndroidLog
 import okhttp3.internal.readFieldOrNull
 import okhttp3.internal.tls.BasicCertificateChainCleaner
 import okhttp3.internal.tls.BasicTrustRootIndex
@@ -216,17 +217,38 @@ open class Platform {
 
     /** Attempt to match the host runtime to a capable Platform implementation. */
     private fun findPlatform(): Platform = if (isAndroid) {
-      throw UnsupportedOperationException("Android platform does not support ${Platform::class.java.name}")
+      findAndroidPlatform()
     } else {
       findJvmPlatform()
     }
 
+    private fun findAndroidPlatform(): Platform {
+      AndroidLog.enable()
+      return Android10Platform.buildIfSupported() ?: AndroidPlatform.buildIfSupported()!!
+    }
+
     private fun findJvmPlatform(): Platform {
+      if (isConscryptPreferred) {
+        val conscrypt = ConscryptPlatform.buildIfSupported()
+
+        if (conscrypt != null) {
+          return conscrypt
+        }
+      }
+
       if (isBouncyCastlePreferred) {
         val bc = BouncyCastlePlatform.buildIfSupported()
 
         if (bc != null) {
           return bc
+        }
+      }
+
+      if (isOpenJSSEPreferred) {
+        val openJSSE = OpenJSSEPlatform.buildIfSupported()
+
+        if (openJSSE != null) {
+          return openJSSE
         }
       }
 

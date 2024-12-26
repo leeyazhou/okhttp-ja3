@@ -15,8 +15,6 @@
  */
 package okhttp3.internal.http2
 
-import okhttp3.PriorityFrame
-import okhttp3.Request
 import java.io.Closeable
 import java.io.IOException
 import java.io.InterruptedIOException
@@ -27,12 +25,7 @@ import okhttp3.internal.EMPTY_HEADERS
 import okhttp3.internal.assertThreadDoesntHoldLock
 import okhttp3.internal.closeQuietly
 import okhttp3.internal.concurrent.TaskRunner
-import okhttp3.internal.http.RequestLine
 import okhttp3.internal.http2.ErrorCode.REFUSED_STREAM
-import okhttp3.internal.http2.Header.Companion.TARGET_AUTHORITY
-import okhttp3.internal.http2.Header.Companion.TARGET_METHOD
-import okhttp3.internal.http2.Header.Companion.TARGET_PATH
-import okhttp3.internal.http2.Header.Companion.TARGET_SCHEME
 import okhttp3.internal.http2.Settings.Companion.DEFAULT_INITIAL_WINDOW_SIZE
 import okhttp3.internal.ignoreIoExceptions
 import okhttp3.internal.notifyAll
@@ -59,7 +52,7 @@ import okio.source
  * an [IOException] that was triggered by a certain caller can be caught and handled by that caller.
  */
 @Suppress("NAME_SHADOWING")
-class Http2Connection internal constructor(builder: Builder) : Closeable, okhttp3.Http2Connection {
+class Http2Connection internal constructor(builder: Builder) : Closeable {
 
   // Internal state of this connection is guarded by 'this'. No blocking operations may be
   // performed while holding this lock!
@@ -120,10 +113,6 @@ class Http2Connection internal constructor(builder: Builder) : Closeable, okhttp
     if (builder.client) {
       set(Settings.INITIAL_WINDOW_SIZE, OKHTTP_CLIENT_WINDOW_SIZE)
     }
-  }
-
-  override fun setSetting(id: Int, value: Int) {
-    okHttpSettings[id] = value;
   }
 
   /**
@@ -494,49 +483,6 @@ class Http2Connection internal constructor(builder: Builder) : Closeable, okhttp
     close(ErrorCode.PROTOCOL_ERROR, ErrorCode.PROTOCOL_ERROR, e)
   }
 
-  private var headerOrder: String? = null
-  override fun setHeaderOrder(order: String?) {
-    headerOrder = order
-  }
-
-  fun fillHeaderOrder(result: ArrayList<Header>, request: Request) {
-    if (headerOrder != null) {
-      for(token in headerOrder!!.split(",")) {
-        when (token) {
-          "a" -> {
-            val host = request.header("Host")
-            if (host != null) {
-              result.add(Header(TARGET_AUTHORITY, host)) // Optional.
-            }
-          }
-          "m" -> {
-            result.add(Header(TARGET_METHOD, request.method))
-          }
-          "p" -> {
-            result.add(Header(TARGET_PATH, RequestLine.requestPath(request.url)))
-          }
-          "s" -> {
-            result.add(Header(TARGET_SCHEME, request.url.scheme))
-          }
-          else -> {
-            throw IllegalStateException("headerOrder: $headerOrder")
-          }
-        }
-      }
-    }
-  }
-
-  private var windowSizeIncrement = -1L
-
-  override fun setWindowSizeIncrement(windowUpdate: Long) {
-    windowSizeIncrement = windowUpdate;
-  }
-
-  private var priorityFrames = ArrayList<PriorityFrame>(10)
-  override fun addPriorityFrame(frame: PriorityFrame) {
-    priorityFrames.add(frame)
-  }
-
   /**
    * Sends any initial frames and starts reading frames from the remote peer. This should be called
    * after [Builder.build] for all new connections.
@@ -550,18 +496,9 @@ class Http2Connection internal constructor(builder: Builder) : Closeable, okhttp
     if (sendConnectionPreface) {
       writer.connectionPreface()
       writer.settings(okHttpSettings)
-      if(windowSizeIncrement >= 0) {
-        if (windowSizeIncrement > 0) {
-          writer.windowUpdate(0, windowSizeIncrement)
-        }
-      } else {
-        val windowSize = okHttpSettings.initialWindowSize
-        if (windowSize != DEFAULT_INITIAL_WINDOW_SIZE) {
-          writer.windowUpdate(0, (windowSize - DEFAULT_INITIAL_WINDOW_SIZE).toLong())
-        }
-      }
-      for(frame in priorityFrames) {
-        writer.priority(frame)
+      val windowSize = okHttpSettings.initialWindowSize
+      if (windowSize != DEFAULT_INITIAL_WINDOW_SIZE) {
+        writer.windowUpdate(0, (windowSize - DEFAULT_INITIAL_WINDOW_SIZE).toLong())
       }
     }
     // Thread doesn't use client Dispatcher, since it is scoped potentially across clients via

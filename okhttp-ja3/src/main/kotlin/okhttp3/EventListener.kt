@@ -177,11 +177,6 @@ abstract class EventListener {
   ) {
   }
 
-  open fun onHttp2ConnectionInit(
-    http2Connection: Http2Connection
-  ) {
-  }
-
   /**
    * Invoked immediately after a socket connection was attempted.
    *

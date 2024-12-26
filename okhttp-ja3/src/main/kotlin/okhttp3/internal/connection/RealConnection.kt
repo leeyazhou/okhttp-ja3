@@ -324,7 +324,7 @@ class RealConnection(
       if (Protocol.H2_PRIOR_KNOWLEDGE in route.address.protocols) {
         socket = rawSocket
         protocol = Protocol.H2_PRIOR_KNOWLEDGE
-        startHttp2(pingIntervalMillis, eventListener)
+        startHttp2(pingIntervalMillis)
         return
       }
 
@@ -338,13 +338,12 @@ class RealConnection(
     eventListener.secureConnectEnd(call, handshake)
 
     if (protocol === Protocol.HTTP_2) {
-      startHttp2(pingIntervalMillis, eventListener)
+      startHttp2(pingIntervalMillis)
     }
   }
 
   @Throws(IOException::class)
-  private fun startHttp2(pingIntervalMillis: Int,
-                         eventListener: EventListener) {
+  private fun startHttp2(pingIntervalMillis: Int) {
     val socket = this.socket!!
     val source = this.source!!
     val sink = this.sink!!
@@ -355,7 +354,6 @@ class RealConnection(
         .pingIntervalMillis(pingIntervalMillis)
         .build()
     this.http2Connection = http2Connection
-    eventListener.onHttp2ConnectionInit(http2Connection)
     this.allocationLimit = Http2Connection.DEFAULT_SETTINGS.getMaxConcurrentStreams()
     http2Connection.start()
   }
