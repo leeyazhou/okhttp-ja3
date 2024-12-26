@@ -78,14 +78,7 @@
             <phase>compile</phase>
             <configuration>
               <sourceDirs>
-                <source>src/main/kotlin</source>
-                <source>target/generated-sources/annotations</source>
-              </sourceDirs>
-              <sourceDirs>
                 <source>src/main/kotlin-ja3</source>
-                <source>target/generated-sources/annotations</source>
-              </sourceDirs>
-              <sourceDirs>
                 <source>src/main/java-templates</source>
                 <source>target/generated-sources/annotations</source>
               </sourceDirs>
