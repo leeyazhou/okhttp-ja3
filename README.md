@@ -9,7 +9,7 @@ okhttp3-ja3
 ```xml
 <dependency>
   <groupId>com.github.leeyazhou</groupId>
-  <artifactId>okhttp-ja3</artifactId>
+  <artifactId>okhttp-ja3-shade</artifactId>
   <version>4.12.0.0</version>
 </dependency>
 ```
