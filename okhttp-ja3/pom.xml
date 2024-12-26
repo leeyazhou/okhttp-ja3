@@ -82,6 +82,10 @@
                 <source>target/generated-sources/annotations</source>
               </sourceDirs>
               <sourceDirs>
+                <source>src/main/kotlin-ja3</source>
+                <source>target/generated-sources/annotations</source>
+              </sourceDirs>
+              <sourceDirs>
                 <source>src/main/java-templates</source>
                 <source>target/generated-sources/annotations</source>
               </sourceDirs>
@@ -115,6 +119,7 @@
             <configuration>
               <sources>
                 <source>src/main/kotlin</source>
+                <source>src/main/kotlin-ja3</source>
                 <source>src/main/java-templates</source>
               </sources>
             </configuration>
