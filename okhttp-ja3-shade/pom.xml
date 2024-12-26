@@ -52,7 +52,7 @@
               </relocations>
               <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
-              <createSourcesJar>true</createSourcesJar>
+              <createSourcesJar>false</createSourcesJar>
               <shadeSourcesContent>false</shadeSourcesContent>
               <shadedArtifactAttached>false</shadedArtifactAttached>
             </configuration>
