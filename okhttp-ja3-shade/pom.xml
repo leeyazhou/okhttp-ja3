@@ -53,7 +53,7 @@
               <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
               <createSourcesJar>true</createSourcesJar>
-              <shadeSourcesContent>true</shadeSourcesContent>
+              <shadeSourcesContent>false</shadeSourcesContent>
               <shadedArtifactAttached>false</shadedArtifactAttached>
             </configuration>
           </execution>
