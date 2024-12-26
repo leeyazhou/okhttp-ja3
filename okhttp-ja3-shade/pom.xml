@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.github.leeyazhou</groupId>
     <artifactId>okhttp-ja3-parent</artifactId>
-    <version>4.12.0.0</version>
+    <version>4.12.0.1</version>
   </parent>
   <artifactId>okhttp-ja3-shade</artifactId>
 
@@ -47,7 +47,7 @@
               <relocations>
                 <relocation>
                   <pattern>okhttp3</pattern>
-                  <shadedPattern>ja3.okhttp3</shadedPattern>
+                  <shadedPattern>com.github.leeyazhou.okhttp3</shadedPattern>
                 </relocation>
               </relocations>
               <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
