@@ -12,17 +12,22 @@ okhttp3-ja3
   <artifactId>okhttp-ja3-shade</artifactId>
   <version>4.12.0.0</version>
 </dependency>
+<dependency>
+  <groupId>com.github.leeyazhou</groupId>
+  <artifactId>bctls-jdk18on-ja3-shade</artifactId>
+  <version>1.82-1</version>
+</dependency>
 ```
 
 ### Example
 
-注意包名是 **ja3.okhttp3.*.**
+注意包名是 **com.github.leeyazhou.okhttp3.*.**
 
 ```java
 import java.io.IOException;
-import ja3.okhttp3.OkHttpClient;
-import ja3.okhttp3.Request;
-import ja3.okhttp3.Response;
+import com.github.leeyazhou.okhttp3.OkHttpClient;
+import com.github.leeyazhou.okhttp3.Request;
+import com.github.leeyazhou.okhttp3.Response;
 
 public class TestOkhttp {
 
