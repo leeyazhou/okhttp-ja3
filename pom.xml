@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.bytesgo</groupId>
     <artifactId>bytesgo-parent</artifactId>
-    <version>6</version>
+    <version>7</version>
   </parent>
   <groupId>com.github.leeyazhou</groupId>
   <artifactId>okhttp-ja3-parent</artifactId>
