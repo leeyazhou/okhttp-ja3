@@ -6,11 +6,13 @@ okhttp3-ja3
 
 ### Installing
 
+查看最新版本：[https://mvnrepository.com/artifact/com.github.leeyazhou/okhttp-ja3-shade](https://mvnrepository.com/artifact/com.github.leeyazhou/okhttp-ja3-shade)
+
 ```xml
 <dependency>
   <groupId>com.github.leeyazhou</groupId>
   <artifactId>okhttp-ja3-shade</artifactId>
-  <version>4.12.0.0</version>
+  <version>4.12.0.1</version>
 </dependency>
 <dependency>
   <groupId>com.github.leeyazhou</groupId>
